@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Candy Crush Saga - Guía y Minijuego</title>
+  <style>
+    :root {
+      --pink: #ff2e93;
+      --pink-dark: #c9186e;
+      --purple: #6b21a8;
+      --cyan: #06b6d4;
+      --yellow: #facc15;
+      --orange: #fb923c;
+      --bg-light: #fff1f8;
+      --white: #ffffff;
+      --text: #3b0764;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #ffe4f3 0%, #f3e8ff 50%, #e0f2fe 100%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Barra superior */
+    nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 3px solid #f9a8d4;
+    }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--pink);
+      text-shadow: 1px 1px 0px #fbcfe8;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--purple);
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--pink);
+    }
+
+    /* Portada / Hero */
+    header {
+      background: linear-gradient(135deg, #ec4899 0%, #9333ea 55%, #3b82f6 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 70px 20px 85px;
+      border-bottom: 8px solid var(--yellow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: #713f12;
+      font-weight: 900;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 3.3rem;
+      font-weight: 900;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      margin-bottom: 12px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      max-width: 620px;
+      margin: 0 auto 28px;
+      color: #fdf2f8;
+    }
+
+    .btn-candy {
+      display: inline-block;
+      background: linear-gradient(180deg, #fde047 0%, #f59e0b 100%);
+      color: #451a03;
+      padding: 15px 34px;
+      border-radius: 999px;
+      font-size: 1.15rem;
+      font-weight: 900;
+      text-decoration: none;
+      border: 3px solid var(--white);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-candy:hover {
+      transform: scale(1.06);
+    }
+
+    /* Contenedor */
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 45px 20px;
+    }
+
+    section {
+      margin-bottom: 65px;
+    }
+
+    .sec-title {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--pink-dark);
+      margin-bottom: 8px;
+    }
+
+    .sec-sub {
+      text-align: center;
+      color: #6b21a8;
+      margin-bottom: 32px;
+      font-size: 1.05rem;
+    }
+
+    /* SECCIÓN 1: MINIJUEGO INTERACTIVO */
+    .game-wrapper {
+      background: var(--white);
+      border-radius: 28px;
+      padding: 30px;
+      max-width: 520px;
+      margin: 0 auto;
+      box-shadow: 0 15px 35px rgba(236, 72, 153, 0.18);
+      border: 4px solid #f472b6;
+      text-align: center;
+    }
+
+    .hud {
+      display: flex;
+      justify-content: space-around;
+      background: #fdf2f8;
+      padding: 14px;
+      border-radius: 18px;
+      margin-bottom: 18px;
+      border: 2px solid #fbcfe8;
+    }
+
+    .hud-box span {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #9d174d;
+      text-transform: uppercase;
+    }
+
+    .hud-box strong {
+      font-size: 1.7rem;
+      color: var(--purple);
+    }
+
+    #game-status {
+      min-height: 28px;
+      font-weight: 800;
+      color: var(--pink);
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      background: #4c1d95;
+      padding: 10px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .cell {
+      aspect-ratio: 1 / 1;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.85rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .cell:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.06);
+    }
+
+    .cell.selected {
+      background: var(--yellow);
+      transform: scale(1.12);
+      box-shadow: 0 0 12px var(--yellow);
+    }
+
+    .cell.popping {
+      transform: scale(0.2);
+      opacity: 0.3;
+    }
+
+    .reset-btn {
+      background: var(--pink);
+      color: var(--white);
+      border: none;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 46, 147, 0.3);
+      transition: background 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: var(--pink-dark);
+    }
+
+    /* SECCIÓN 2: CARAMELOS ESPECIALES */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .candy-card {
+      background: var(--white);
+      border-radius: 22px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(107, 33, 168, 0.08);
+      border-bottom: 6px solid var(--cyan);
+      transition: transform 0.25s;
+    }
+
+    .candy-card:nth-child(2) { border-bottom-color: var(--orange); }
+    .candy-card:nth-child(3) { border-bottom-color: var(--pink); }
+    .candy-card:nth-child(4) { border-bottom-color: var(--yellow); }
+
+    .candy-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .candy-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .candy-card h3 {
+      color: var(--purple);
+      margin-bottom: 8px;
+      font-size: 1.25rem;
+    }
+
+    .candy-card p {
+      font-size: 0.95rem;
+      color: #581c87;
+    }
+
+    .combo-tag {
+      display: inline-block;
+      margin-top: 12px;
+      background: #f3e8ff;
+      color: var(--purple);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    /* SECCIÓN 3: MODOS DE JUEGO Y CONSEJOS */
+    .tips-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--white);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 10px 25px rgba(107, 33, 168, 0.08);
+    }
+
+    .panel h3 {
+      font-size: 1.4rem;
+      color: var(--pink-dark);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel ul {
+      list-style: none;
+    }
+
+    .panel li {
+      background: #fdf2f8;
+      margin-bottom: 10px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.96rem;
+      border-left: 4px solid var(--pink);
+    }
+
+    .panel.blue li {
+      background: #f0f9ff;
+      border-left-color: var(--cyan);
+    }
+
+    footer {
+      background: #3b0764;
+      color: #f3e8ff;
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 2.4rem; }
+      .tips-container { grid-template-columns: 1fr; }
+      .cell { font-size: 1.45rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav>
+    <div class="brand">🍭 Candy Crush Web</div>
+    <div class="nav-links">
+      <a href="#jugar">Jugar</a>
+      <a href="#especiales">Caramelos</a>
+      <a href="#consejos">Consejos</a>
+    </div>
+  </nav>
+
+  <!-- PORTADA -->
+  <header>
+    <div class="badge">✨ El juego más dulce del mundo</div>
+    <h1>🍬 Candy Crush Saga</h1>
+    <p>Combiná caramelos de colores, creá explosiones gigantes y superá cientos de niveles llenos de desafíos.</p>
+    <a href="#jugar" class="btn-candy">¡Jugar Minijuego Ahora!</a>
+  </header>
+
+  <main class="container">
+
+    <!-- SECCIÓN 1: MINIJUEGO -->
+    <section id="jugar">
+      <h2 class="sec-title">🎮 ¡Probá una partida rápida!</h2>
+      <p class="sec-sub">Hacé clic en un caramelo y luego en otro al lado para juntar 3 o más iguales.</p>
+
+      <div class="game-wrapper">
+        <div class="hud">
+          <div class="hud-box">
+            <span>Puntos</span>
+            <strong id="score">0</strong>
+          </div>
+          <div class="hud-box">
+            <span>Movimientos</span>
+            <strong id="moves">15</strong>
+          </div>
+        </div>
+
+        <div id="game-status">¡Elegí un caramelo para empezar!</div>
+
+        <div class="board" id="board"></div>
+
+        <button class="reset-btn" onclick="initGame()">🔄 Reiniciar Partida</button>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: CARAMELOS ESPECIALES -->
+    <section id="especiales">
+      <h2 class="sec-title">✨ Caramelos Especiales</h2>
+      <p class="sec-sub">Si juntás más de 3 caramelos a la vez, creás poderes increíbles:</p>
+
+      <div class="cards-grid">
+        <div class="candy-card">
+          <div class="candy-icon">🍭</div>
+          <h3>Caramelo Rayado</h3>
+          <p>Elimina toda una fila horizontal o una columna vertical completa de un solo golpe.</p>
+          <span class="combo-tag">Juntá 4 en línea</span>
+        </div>
+
+        <div class="candy-card">
+          <div class="candy-icon">🍬</div>
+          <h3>Con Envoltorio</h3>
+          <p>Explota dos veces seguidas eliminando todos los caramelos que están alrededor.</p>
+          <span class="combo-tag">Formá una L o T</span>
+        </div>
+
+        <div class="candy-card">
+          <div class="candy-icon">🍫</div>
+          <h3>Bomba de Color</h3>
+          <p>Al cambiarla por cualquier caramelo, hace desaparecer todos los de ese mismo color.</p>
+          <span class="combo-tag">Juntá 5 en línea</span>
+        </div>
+
+        <div class="candy-card">
+          <div class="candy-icon">🧁</div>
+          <h3>Super Combo</h3>
+          <p>Si combinás dos caramelos especiales entre sí, limpiás casi todo el tablero.</p>
+          <span class="combo-tag">Especial + Especial</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 3: MODOS Y CONSEJOS -->
+    <section id="consejos">
+      <h2 class="sec-title">🏆 Modos de Juego y Trucos</h2>
+      <p class="sec-sub">Todo lo que necesitás saber para no quedarte trabado en ningún nivel.</p>
+
+      <div class="tips-container">
+        <div class="panel">
+          <h3>🎯 Tipos de Niveles</h3>
+          <ul>
+            <li><strong>Limpiar la Gelatina:</strong> Tenés que romper todos los cuadros transparentes del tablero.</li>
+            <li><strong>Bajar Ingredientes:</strong> Hacé que las cerezas y avellanas lleguen hasta abajo.</li>
+            <li><strong>Pedidos de Caramelos:</strong> Juntá la cantidad exacta de colores que pide el nivel.</li>
+          </ul>
+        </div>
+
+        <div class="panel blue">
+          <h3>💡 Consejos de Experto</h3>
+          <ul>
+            <li><strong>Empezá desde abajo:</strong> Al romper caramelos abajo, caen nuevos arriba y se arman combos solos.</li>
+            <li><strong>No apures los movimientos:</strong> Mirá todo el tablero antes de mover para ver si podés juntar 4 o 5.</li>
+            <li><strong>Guardá las Bombas:</strong> Intentá juntar una Bomba de Color con un Caramelo Rayado para ganar fácil.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Hecho con mucho azúcar 🍩 • Fan Page de Candy Crush en Español
+  </footer>
+
+  <script>
+    const SIZE = 7;
+    const CANDIES = ['🍬', '🍭', '🍩', '🧁', '🍫', '🍓'];
+    let board = [];
+    let selected = null;
+    let score = 0;
+    let moves = 15;
+    let isAnimating = false;
+
+    const boardEl = document.getElementById('board');
+    const scoreEl = document.getElementById('score');
+    const movesEl = document.getElementById('moves');
+    const statusEl = document.getElementById('game-status');
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function randomCandy() {
+      return CANDIES[Math.floor(Math.random() * CANDIES.length)];
+    }
+
+    function initGame() {
+      score = 0;
+      moves = 15;
+      selected = null;
+      isAnimating = false;
+      scoreEl.innerText = score;
+      movesEl.innerText = moves;
+      statusEl.innerText = '¡Elegí un caramelo para empezar!';
+
+      // Crear tablero sin combinaciones iniciales
+      board = [];
+      for (let r = 0; r < SIZE; r++) {
+        board[r] = [];
+        for (let c = 0; c < SIZE; c++) {
+          let candy;
+          do {
+            candy = randomCandy();
+          } while (
+            (c >= 2 && board[r][c - 1] === candy && board[r][c - 2] === candy) ||
+            (r >= 2 && board[r - 1][c] === candy && board[r - 2][c] === candy)
+          );
+          board[r][c] = candy;
+        }
+      }
+      renderBoard();
+    }
+
+    function renderBoard(poppingSet = new Set()) {
+      boardEl.innerHTML = '';
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE; c++) {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          if (selected && selected.r === r && selected.c === c) {
+            cell.classList.add('selected');
+          }
+          if (poppingSet.has(`${r},${c}`)) {
+            cell.classList.add('popping');
+          }
+          cell.innerText = board[r][c] || '';
+          cell.onclick = () => handleCellClick(r, c);
+          boardEl.appendChild(cell);
+        }
+      }
+    }
+
+    async function handleCellClick(r, c) {
+      if (isAnimating || moves <= 0) return;
+
+      if (!selected) {
+        selected = { r, c };
+        renderBoard();
+        return;
+      }
+
+      if (selected.r === r && selected.c === c) {
+        selected = null;
+        renderBoard();
+        return;
+      }
+
+      const isAdjacent = Math.abs(selected.r - r) + Math.abs(selected.c - c) === 1;
+      if (!isAdjacent) {
+        selected = { r, c };
+        renderBoard();
+        return;
+      }
+
+      // Intentar intercambio
+      isAnimating = true;
+      const r1 = selected.r, c1 = selected.c;
+      selected = null;
+
+      swap(r1, c1, r, c);
+      renderBoard();
+      await sleep(180);
+
+      let matches = findMatches();
+      if (matches.size === 0) {
+        // Devolver si no hay combinación
+        statusEl.innerText = '❌ ¡Ese movimiento no junta 3!';
+        swap(r1, c1, r, c);
+        renderBoard();
+        isAnimating = false;
+        return;
+      }
+
+      // Movimiento válido
+      moves--;
+      movesEl.innerText = moves;
+      let combo = 1;
+
+      while (matches.size > 0) {
+        const points = matches.size * 15 * combo;
+        score += points;
+        scoreEl.innerText = score;
+        statusEl.innerText = combo > 1 ? `🔥 ¡Combo x${combo}! +${points} pts` : `🍬 ¡Dulce! +${points} pts`;
+
+        renderBoard(matches);
+        await sleep(230);
+
+        matches.forEach(key => {
+          const [mr, mc] = key.split(',').map(Number);
+          board[mr][mc] = null;
+        });
+
+        applyGravity();
+        renderBoard();
+        await sleep(220);
+
+        matches = findMatches();
+        combo++;
+      }
+
+      if (moves === 0) {
+        statusEl.innerText = `🎉 ¡Fin del juego! Lograste ${score} puntos.`;
+      }
+
+      isAnimating = false;
+    }
+
+    function swap(r1, c1, r2, c2) {
+      const temp = board[r1][c1];
+      board[r1][c1] = board[r2][c2];
+      board[r2][c2] = temp;
+    }
+
+    function findMatches() {
+      const matched = new Set();
+
+      // Horizontales
+      for (let r = 0; r < SIZE; r++) {
+        for (let c = 0; c < SIZE - 2; c++) {
+          const val = board[r][c];
+          if (val && val === board[r][c + 1] && val === board[r][c + 2]) {
+            matched.add(`${r},${c}`);
+            matched.add(`${r},${c + 1}`);
+            matched.add(`${r},${c + 2}`);
+          }
+        }
+      }
+
+      // Verticales
+      for (let c = 0; c < SIZE; c++) {
+        for (let r = 0; r < SIZE - 2; r++) {
+          const val = board[r][c];
+          if (val && val === board[r + 1][c] && val === board[r + 2][c]) {
+            matched.add(`${r},${c}`);
+            matched.add(`${r + 1},${c}`);
+            matched.add(`${r + 2},${c}`);
+          }
+        }
+      }
+
+      return matched;
+    }
+
+    function applyGravity() {
+      for (let c = 0; c < SIZE; c++) {
+        let emptyRow = SIZE - 1;
+        for (let r = SIZE - 1; r >= 0; r--) {
+          if (board[r][c] !== null) {
+            board[emptyRow][c] = board[r][c];
+            if (emptyRow !== r) board[r][c] = null;
+            emptyRow--;
+          }
+        }
+        for (let r = emptyRow; r >= 0; r--) {
+          board[r][c] = randomCandy();
+        }
+      }
+    }
+
+    // Iniciar tablero al cargar
+    initGame();
+  </script>
+
+</body>
+</html>
